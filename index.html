@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Your Khodam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            @apply bg-gray-100 flex items-center justify-center min-h-screen;
+        }
+        .container {
+            @apply bg-white p-6 rounded-lg shadow-lg;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <h1 class="text-2xl font-bold mb-4">Check Your Khodam</h1>
+        <form id="khodamForm" class="mb-4">
+            <label for="name" class="block text-lg font-medium text-gray-700">Enter your name:</label>
+            <input type="text" id="name" name="name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            <button type="submit" class="mt-3 w-full bg-blue-500 text-white py-2 rounded-md">Check Khodam</button>
+        </form>
+        <p id="result" class="text-lg font-semibold text-gray-700"></p>
+    </div>
+
+    <script>
+        const khodams = [
+            "Harimau Hitam", "Macan Kumbang", "Serigala Hitam", "Burung Hantu Hitam",
+            "Naga Hitam", "Kucing Hitam", "Kelelawar Hitam", "Anjing Hitam",
+            "Ikan Lele Hitam", "Kuda Hitam", "Ular Hitam", "Gagak Hitam",
+            "Kalajengking Hitam", "Kumbang Hitam", "Musang Hitam", "Tikus Hitam",
+            "Kupu-kupu Hitam", "Katak Hitam", "Belalang Hitam", "Rusa Hitam",
+            "Kepiting Hitam", "Kijang Hitam", "Burung Elang Hitam", "Laba-laba Hitam",
+            "Buaya Hitam", "Monyet Hitam", "Gajah Hitam", "Bebek Hitam",
+            "Ayam Hitam", "Kerbau Hitam"
+        ];
+
+        function generateRandomKhodam() {
+            return khodams[Math.floor(Math.random() * khodams.length)];
+        }
+
+        document.getElementById('khodamForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            if (name) {
+                const khodam = generateRandomKhodam();
+                document.getElementById('result').innerText = `Your Khodam for ${name} is: ${khodam}`;
+                window.history.pushState({}, '', `/${name}`);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const path = window.location.pathname.substring(1);
+            if (path) {
+                const name = decodeURIComponent(path);
+                const khodam = generateRandomKhodam();
+                document.getElementById('name').value = name;
+                document.getElementById('result').innerText = `Your Khodam for ${name} is: ${khodam}`;
+            }
+        });
+    </script>
+</body>
+</html>
