@@ -32,13 +32,17 @@
             margin-top: 20px;
             font-size: 1.2rem;
         }
+        #spinner {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="text-center mb-4">
-            <p>Check Khodammu untuk menilai Aura Hitammu 
-            
+            <p>Mulai 22 Juni 2024, Website check khodam akan dialihkan ke 
+                <a href="https://check-your-khodam.netlify.app/" class="btn btn-sm btn-warning">https://check-your-khodam.netlify.app/</a>
             </p>
         </div>
         <div class="card p-4">
@@ -50,29 +54,40 @@
                     <button type="submit" class="btn btn-primary">CHECK</button>
                 </div>
             </form>
+            <div id="spinner" class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
             <p id="result" class="text-center"></p>
-            <p class="text-center">Permainan lainnya: <a href="#" class="text-decoration-none fw-bold" style="color: #ff1493;">Cari Pasangan</a></p>
+            <p class="text-center">Permainan lainnya: <a href="#" class="text-decoration-none fw-bold" style="color: #ff1493;">Cupid Meter</a></p>
         </div>
-       
+        <div class="text-center mt-4">
+            <p>Support kami di <a href="#" class="text-decoration-none" style="color: #ff4500;">Trakteer Maru</a> & 
+                <a href="#" class="text-decoration-none" style="color: #ff4500;">Trakteer Jows</a>
+            </p>
+            <p>Developed by <a href="#" class="text-decoration-none fw-bold" style="color: #00ffff;">Maruu</a> & 
+                <a href="#" class="text-decoration-none fw-bold" style="color: #00ffff;">Jows</a>
+            </p>
+        </div>
     </div>
 
     <script>
-      const khodams = [
-          "Harimau Hitam", "Macan Kumbang", "Serigala Hitam", "Burung Hantu Hitam",
-          "Naga Hitam", "Kucing Hitam", "Kelelawar Hitam", "Anjing Hitam",
-          "Ikan Lele Hitam", "Kuda Hitam", "Ular Hitam", "Gagak Hitam",
-          "Kalajengking Hitam", "Kumbang Hitam", "Musang Hitam", "Tikus Hitam",
-          "Kupu-kupu Hitam", "Katak Hitam", "Belalang Hitam", "Rusa Hitam",
-          "Dawet Ayu", "Soto Ayam", "Nasi Goreng", "Gado-gado", "Rendang",
-          "Sate Ayam", "Bakso", "Nasi Uduk", "Nasi Kuning", "Nasi Padang",
-          "Soto Betawi", "Sop Buntut", "Rawon", "Ketoprak", "Kerak Telor",
-          "Pecel Lele", "Soto Banjar", "Lontong Cap Go Meh", "Lontong Sayur", "Nasi Liwet", "Nasi Pecel",
-          "Gantungan Kunci", "Cas HP", "Botol Minum", "Buku Catatan", "Pulpen",
-          "Kipas Angin", "Senter", "Kaca Pembesar", "Sisir", "Kacamata Hitam",
-          "Payung", "Jam Tangan", "Dompet", "Tas Ransel", "Kamera",
-          "Mouse", "Keyboard", "Lampu Meja", "Kunci Mobil", "Power Bank"
-      ];
-
+        const khodams = [
+    "Harimau Hitam", "Macan Kumbang", "Serigala Hitam", "Burung Hantu Hitam",
+    "Naga Hitam", "Kucing Hitam", "Kelelawar Hitam", "Anjing Hitam",
+    "Ikan Lele Hitam", "Kuda Hitam", "Ular Hitam", "Gagak Hitam",
+    "Kalajengking Hitam", "Kumbang Hitam", "Musang Hitam", "Tikus Hitam",
+    "Kupu-kupu Hitam", "Katak Hitam", "Belalang Hitam", "Rusa Hitam",
+    "Dawet Ayu", "Soto Ayam", "Nasi Goreng", "Gado-gado", "Rendang",
+    "Sate Ayam", "Bakso", "Nasi Uduk", "Nasi Kuning", "Nasi Padang",
+    "Soto Betawi", "Sop Buntut", "Rawon", "Ketoprak", "Kerak Telor",
+    "Pecel Lele", "Soto Banjar", "Lontong Cap Go Meh", "Lontong Sayur", "Nasi Liwet", "Nasi Pecel",
+    "Gantungan Kunci", "Cas HP", "Botol Minum", "Buku Catatan", "Pulpen",
+    "Kipas Angin", "Senter", "Kaca Pembesar", "Sisir", "Kacamata Hitam",
+    "Payung", "Jam Tangan", "Dompet", "Tas Ransel", "Kamera",
+    "Mouse", "Keyboard", "Lampu Meja", "Kunci Mobil", "Power Bank"
+];
 
         function generateRandomKhodam() {
             const random = Math.random();
@@ -86,10 +101,17 @@
         document.getElementById('khodamForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('name').value.trim();
+            const resultElement = document.getElementById('result');
+            const spinner = document.getElementById('spinner');
             if (name) {
-                const khodam = generateRandomKhodam();
-                document.getElementById('result').innerText = `Your Khodam for ${name} is: ${khodam}`;
-                window.history.pushState({}, null, `/${name}`);
+                resultElement.innerText = '';
+                spinner.style.display = 'block';
+                setTimeout(() => {
+                    const khodam = generateRandomKhodam();
+                    resultElement.innerText = `Your Khodam for ${name} is: ${khodam}`;
+                    spinner.style.display = 'none';
+                    window.history.pushState({}, null, `/${name}`);
+                }, 2000); // 2 second delay
             }
         });
 
@@ -97,8 +119,15 @@
             const path = window.location.pathname.substring(1);
             if (path) {
                 document.getElementById('name').value = path;
-                const khodam = generateRandomKhodam();
-                document.getElementById('result').innerText = `Your Khodam for ${path} is: ${khodam}`;
+                const resultElement = document.getElementById('result');
+                const spinner = document.getElementById('spinner');
+                resultElement.innerText = '';
+                spinner.style.display = 'block';
+                setTimeout(() => {
+                    const khodam = generateRandomKhodam();
+                    resultElement.innerText = `Your Khodam for ${path} is: ${khodam}`;
+                    spinner.style.display = 'none';
+                }, 2000); // 2 second delay
             }
         });
     </script>
